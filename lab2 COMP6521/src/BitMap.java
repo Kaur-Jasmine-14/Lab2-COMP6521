@@ -46,8 +46,8 @@ public class BitMap {
 	
 	// bitmap key
 	public static class BIKey {
-		private String group;
-	    private String value;
+		private String group; // attribute name
+	    private String value; // all distinct values
 		
 		public BIKey(String group, Object value) {
 			this.group = group;
@@ -77,6 +77,14 @@ public class BitMap {
 				return new BigDecimal((Double) value).stripTrailingZeros().toPlainString();
 			else
 				return String.valueOf(value);
+		}
+		
+		@Override
+		public int hashCode() {               // test
+			int result = group.hashCode();
+			result = 31 * result + value.hashCode();
+
+			return result;
 		}
 }
 	
