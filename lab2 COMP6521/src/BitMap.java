@@ -80,7 +80,7 @@ public class BitMap {
 		
 		
 	}
-	
+
 	// bitmap key
 	public static class BIKey {
 		private String group; // attribute name
