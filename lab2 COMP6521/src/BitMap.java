@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -8,20 +9,17 @@ import java.util.List;
 
 public class BitMap {
 	
-	public void getData(String filePath) throws IOException {
+	public void getData(String filePath, long totalMemory) throws IOException {
+		/*
 		// String S1="457522172015-03-10Orelia Boswell           1010223218265 Albuquerque NM 87180 West";
-		
         String FixedLengths = "8,10,25,1,3,9,43";
         List<String> items = Arrays.asList(FixedLengths.split("\\s*,\\s*"));
-        List<String> content = new ArrayList<>();
-        
+        List<String> content = new ArrayList<>(); 
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
          try {
-        	
             String line1;
             while ((line1 = reader.readLine()) != null) {
                 // process the line.
-            	
                 int n = 0;
                 String line = "";
                 for (String i : items) {
@@ -40,7 +38,46 @@ public class BitMap {
             }
         } finally {
         	System.out.println(content);
-		}
+		}*/
+		ReadDataset dataReader = null;
+        try {
+            short bufferCounter = 0;
+            dataReader = new ReadDataset(new File(filePath), totalMemory);
+            while (!dataReader.eof) {
+                System.gc();
+                ArrayList<Dataset> oneBlock = new ArrayList<>();
+                while (true) {
+                    ArrayList<Dataset> eachBlock = dataReader.block();
+                    if (eachBlock.isEmpty()) {
+                        break;
+                    }
+                    oneBlock.addAll(eachBlock);
+                }
+                if (!oneBlock.isEmpty()) {
+                   // form bitmap index
+                    bufferCounter++;
+                    /*
+                    dataWriter =
+                            new WriteDatasetTuples(new File(String.format(outputPath + "%d%d.txt", bufferCounter, Main.fileCounter)));
+                    dataWriter.writeToFile(oneBlock, tuplesInBlock);
+                    dataWriter.close();
+                    System.out.printf("batch %d sorted which had %d tuples \n", bufferCounter, oneBlock.size());*/
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert dataReader != null;
+                dataReader.close();
+              /*  assert dataWriter != null;
+                dataWriter.close();*/
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+		
+		
 		
 	}
 	

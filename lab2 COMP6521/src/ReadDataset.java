@@ -12,14 +12,13 @@ import java.util.Date;
 public class ReadDataset extends BufferedReader {
 
     public int diskIO = 0;
-   // public int lineNumber = 1;
     public File data;
     public boolean eof;
     public float memoryUsed;
     int count = 0;
 
 
-    public ReadDataset(File data, float memoryUsed) throws FileNotFoundException {
+    public ReadDataset(File data, Long memoryUsed) throws FileNotFoundException {
         super(new java.io.FileReader(data));
         this.data = data;
         this.memoryUsed = Runtime.getRuntime().maxMemory() * memoryUsed;
@@ -57,7 +56,6 @@ public class ReadDataset extends BufferedReader {
                 } while (count < 40);
             }
         }
-      //  lineNumber++;
         return blockTuples;
     }
 
