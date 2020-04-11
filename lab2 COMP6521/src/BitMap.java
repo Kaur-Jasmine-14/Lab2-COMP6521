@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,31 +35,50 @@ public class BitMap {
                     n = n + Integer.parseInt(i);
                     // System.out.println("After"+n);
                 }
-                System.out.println(line);
+               // System.out.println(line);
                 content.add(line);
             }
         } finally {
-			
+        	System.out.println(content);
 		}
 		
-         
-		/*
-		 File file = new File("inputfile.txt");
-	        FileInputStream fin = null;
-	        try {
-	            // create FileInputStream object
-	            fin = new FileInputStream(file);
-	 
-	            byte fileContent[] = new byte[(int)file.length()];
-	             
-	            // Reads up to certain bytes of data from this input stream into an array of bytes.
-	            fin.read(fileContent);
-	            //create string from byte array
-	            String s = new String(fileContent);
-	            System.out.println("File content: " + s);
-	        }*/
-		
-
 	}
+	
+	// bitmap key
+	public static class BIKey {
+		private String group;
+	    private String value;
+		
+		public BIKey(String group, Object value) {
+			this.group = group;
+			if(value != null) {
+				//this.value = Utils.toString(value);
+				toString(value);
+			}
+			else
+				this.value = "";
+		}
+		
+		public String getGroup() {
+			return group;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+      
+		public static String toString(Object value) {
+			if (value == null)
+				return null;
 
+			if (value instanceof Float)
+				return new BigDecimal((Float) value).stripTrailingZeros().toPlainString();
+			else if (value instanceof Double)
+				return new BigDecimal((Double) value).stripTrailingZeros().toPlainString();
+			else
+				return String.valueOf(value);
+		}
+}
+	
+	
 }
